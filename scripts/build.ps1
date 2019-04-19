@@ -30,12 +30,6 @@ if (!(Test-Path "$PSScriptRoot\..\dotnetcli")) {
         Write-Error "Failed to install framework version 2.0.0, exit code [$lastexitcode], aborting build."
         exit -1
     }
-
-    Invoke-Expression -Command "$PSScriptRoot\install-dotnet.ps1 -Version 2.1.401 -InstallDir $PSScriptRoot\..\dotnetcli"
-    if ($lastexitcode -ne $null -and $lastexitcode -ne 0) {
-        Write-Error "Failed to install framework version 2.1.401, exit code [$lastexitcode], aborting build."
-        exit -1
-    }
 } else {
     Write-Host "dotnet.exe is installed, checking for latest."
 
@@ -70,7 +64,7 @@ if ($Restore -eq "true") {
 }
 
 Write-Host "Building solution $file..."
-Invoke-Expression "$dotnetExePath build $file -c $Configuration /p:VersionSuffix=$BuildVersion --no-restore"
+Invoke-Expression "$dotnetExePath build $file -c $Configuration /p:VersionSuffix=$BuildVersion --no-restore /nologo"
 
 if ($lastexitcode -ne 0) {
     Write-Error "Failed to build solution $file"
